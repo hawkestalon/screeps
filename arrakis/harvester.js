@@ -22,7 +22,7 @@ function runStrategy(creep, strategy) {
 }
 
 function runCoreBehavior(creep, source, targets) {
-  if(creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
+  if(creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
     actions.harvest(creep, source);
   } else {
     actions.transferEnergy(creep, targets[0]);

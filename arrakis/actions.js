@@ -13,7 +13,7 @@ function transferEnergy(creep, target) {
 }
 
 function upgrade(creep, target) {
-  if(creep.upgrade(target) === ERR_NOT_IN_RANGE) {
+  if(creep.upgradeController(target) === ERR_NOT_IN_RANGE) {
     creep.moveTo(target);
   }
 }
