@@ -1,12 +1,14 @@
 
-const { transferEnergy } = require('../actions/transfer-energy');
+const { transferEnergy } = require('./transfer-energy');
 
 function run(creep) {
   const source = creep.pos.findClosestByPath(FIND_SOURCES);
-  const target = creep.room.find(structures, {
+  const target = creep.room.find(FIND_STRUCTURES, {
     filter: (structure) => structure.type === STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
   });
-  transferEnergy(creep, source, target);
+  if(creep.store.getFreeCapacity(RESOURCE_ENERGY) === 0) {
+    
+  }
 }
 
 module.exports = {

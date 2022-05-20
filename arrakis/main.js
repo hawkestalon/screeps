@@ -1,7 +1,13 @@
 // main js file is where the game loop lives
+const harvesterRole = require('./harvester');
 
 module.exports.loop = () => {
-
+  for(const name in Game.creeps) {
+    const creep = Game.creeps[name];
+    if(creep.memory.role === 'harvester') {
+      harvesterRole.run(creep);
+    }
+  }
 }
 
 // tasks for screeps

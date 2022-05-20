@@ -18,11 +18,11 @@ function transferEnergy(creep, source, target) {
   const gatherAction = determineSourceAction(creep, source);
   const targetAction = determineTargetAction(creep, target);
   if(creep.store.getUsedCapacity() === 0){
-    if(gatherAction(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+    if(creep['harvest'](target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}});
     }
   } else {
-    if(targetAction(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+    if(creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}});
     }
   }
