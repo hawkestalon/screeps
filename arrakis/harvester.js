@@ -1,12 +1,15 @@
 
-const actions = require('./transfer-energy');
+const actions = require('./actions');
 
 function run(creep) {
   const source = creep.pos.findClosestByPath(FIND_SOURCES);
   const targets = creep.room.find(FIND_STRUCTURES, {
-    filter: (structure) => structure.type === STRUCTURE_SPAWN && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+    filter: (structure) => {
+        return (structure.structureType == STRUCTURE_SPAWN) &&
+            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+    }
   });
-  runCoreBehavior(creep, source, targets);
+  runCoreBehavior(creep, source, targets[0]);
 }
 
 function prioritizeStructure() {
@@ -21,11 +24,11 @@ function runStrategy(creep, strategy) {
   return STRATEGIES.none(creep);
 }
 
-function runCoreBehavior(creep, source, targets) {
-  if(creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+function runCoreBehavior(creep, source, target) {
+  if(creep.store[RESOURCE_ENERGY] === 0) {
     actions.harvest(creep, source);
   } else {
-    actions.transferEnergy(creep, targets[0]);
+    actions.transferEnergy(creep, target);
   }
 }
 

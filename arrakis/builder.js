@@ -1,8 +1,8 @@
 const actions = require('./actions');
 
 function runStrategy(creep, strategy) {
-  const strategy = STRATEGIES[strategy];
-  if(strategy) return strategy(creep);
+  const strategyFunction = STRATEGIES[strategy];
+  if(strategy) return strategyFunction(creep);
   return STRATEGIES.none(creep);
 }
 
@@ -13,7 +13,7 @@ function run(creep) {
 }
 
 function runCoreBehavior(creep, source, target) {
-  if(creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+  if(creep.store[RESOURCE_ENERGY] === 0) {
     actions.harvest(creep, source);
   } else {
     actions.build(creep, target);
