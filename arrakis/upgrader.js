@@ -13,10 +13,17 @@ function run(creep) {
 }
 
 function runCoreBehavior(creep, source, target) {
-  if(creep.store[RESOURCE_ENERGY] === 0) {
-    actions.harvest(creep, source);
-  } else {
+  if(creep.memory.upgrading && creep.store[RESOURCE_ENERGY] === 0) {
+    creep.memory.upgrading = false;
+  }
+  if(!creep.memory.upgrading && creep.store.getFreeCapacity() === 0) {
+    creep.memory.upgrading = true;
+  }
+
+  if(creep.memory.upgrading) {
     actions.upgrade(creep, target);
+  } else {
+    actions.harvest(creep, source);
   }
 }
 
