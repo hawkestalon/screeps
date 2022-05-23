@@ -1,21 +1,28 @@
 
 
 function run(spawnName) {
-  const { harvester, builder, upgrader } = _.reduce(Game.creeps, (result, creep) => {
-    console.log('run', JSON.stringify(result), creep.memory.role)
+  const { harvester, builder, upgrader, miner } = _.reduce(Game.creeps, (result, creep) => {
     result[creep.memory.role] += 1;
     return result;
-  }, { harvester: 0, builder: 0, upgrader: 0 });
+  }, { harvester: 0, builder: 0, upgrader: 0, miner: 0 });
+
+  console.log(harvester, builder, upgrader, miner);
 
   if(Game.spawns[spawnName].spawning) {
     console.log('Already Spawning')
+    return; 
   }
 
-  console.log(harvester, getNumberOfRequiredCreeps('harvester'))
   if(harvester < getNumberOfRequiredCreeps('harvester')) {
     return spawnCreep('harvester', spawnName);
   }
-    if(upgrader < getNumberOfRequiredCreeps('upgrader')) {
+
+  if(miner < getNumberOfRequiredCreeps('miner')) {
+    console.log('Spawning Miner')
+    return spawnCreep('miner', spawnName);
+  }
+
+  if(upgrader < getNumberOfRequiredCreeps('upgrader')) {
     return spawnCreep('upgrader', spawnName);
   }
 
@@ -72,13 +79,18 @@ const creepRequirements = {
   upgrader: {
     number: 1,
     modifier: 1,
+  },
+  miner: {
+    number: 1,
+    modifier: 1
   }
 }
 
 const creepParts = {
   harvester: [WORK, MOVE, CARRY],
   builder: [WORK, MOVE, CARRY],
-  upgrader: [WORK, MOVE, CARRY]
+  upgrader: [WORK, MOVE, CARRY],
+  miner: [WORK, WORK, MOVE],
 }
 
 module.exports = {

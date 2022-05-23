@@ -5,11 +5,15 @@ function run(creep) {
   const source = creep.pos.findClosestByPath(FIND_SOURCES);
   const targets = creep.room.find(FIND_STRUCTURES, {
     filter: (structure) => {
-        return (structure.structureType == STRUCTURE_SPAWN) &&
+        return (structure.structureType == STRUCTURE_SPAWN || structure.structureType === STRUCTURE_CONTAINER) &&
             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
     }
   });
-  runCoreBehavior(creep, source, targets[0]);
+  const droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
+  if(isMinerPresent() && droppedSources) {
+    return runMinerBehavior(creep, droppedSources[0], targets[0]);
+  } 
+  return runCoreBehavior(creep, source, targets[0]);
 }
 
 function prioritizeStructure() {
@@ -30,6 +34,23 @@ function runCoreBehavior(creep, source, target) {
   } else {
     actions.transferEnergy(creep, target);
   }
+}
+
+function runMinerBehavior(creep, source, target) {
+  if(creep.store[RESOURCE_ENERGY] === 0) {
+    actions.pickup(source);
+  } else {
+    actions.transferEnergy(target);
+  }
+}
+
+function isMinerPresent() {
+  for(const name in Game.creeps) {
+    if(Game.creeps[name].memory.role === 'miner') {
+      return true;
+    }
+  }
+  return false;
 }
 
 const STRATEGIES = {
