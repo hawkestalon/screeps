@@ -1,7 +1,8 @@
 const actions = require('./actions');
 
 function runCoreBehavior(creep) {
-  const sources = creep.pos.findClosestByPath(FIND_SOURCES);
+  const sources = creep.room.find(FIND_SOURCES);
+  console.log('Sources for miner --> ', sources)
   actions.harvest(creep, sources[0]);
 }
 

@@ -73,7 +73,7 @@ const creepRequirements = {
     modifier: 1,
   },
   builder: {
-    number: 1,
+    number: 3,
     modifier: 1,
   },
   upgrader: {

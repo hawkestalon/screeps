@@ -5,13 +5,13 @@ function run(creep) {
   const source = creep.pos.findClosestByPath(FIND_SOURCES);
   const targets = creep.room.find(FIND_STRUCTURES, {
     filter: (structure) => {
-        return (structure.structureType == STRUCTURE_SPAWN || structure.structureType === STRUCTURE_CONTAINER) &&
+        return (structure.structureType == STRUCTURE_SPAWN  || structure.structureType === STRUCTURE_EXTENSION || structure.structureType === STRUCTURE_CONTAINER) &&
             structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
     }
   });
   const droppedSources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
   if(isMinerPresent() && droppedSources) {
-    return runMinerBehavior(creep, droppedSources[0], targets[0]);
+    return runMinerBehavior(creep, droppedSources, targets[0]);
   } 
   return runCoreBehavior(creep, source, targets[0]);
 }
@@ -29,7 +29,7 @@ function runStrategy(creep, strategy) {
 }
 
 function runCoreBehavior(creep, source, target) {
-  if(creep.store[RESOURCE_ENERGY] === 0) {
+  if(creep.store.getFreeCapacity() > 0) {
     actions.harvest(creep, source);
   } else {
     actions.transferEnergy(creep, target);
@@ -37,10 +37,10 @@ function runCoreBehavior(creep, source, target) {
 }
 
 function runMinerBehavior(creep, source, target) {
-  if(creep.store[RESOURCE_ENERGY] === 0) {
-    actions.pickup(source);
+  if(creep.store.getFreeCapacity() > 0) {
+    actions.pickup(creep, source);
   } else {
-    actions.transferEnergy(target);
+    actions.transferEnergy(creep, target);
   }
 }
 
